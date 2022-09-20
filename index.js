@@ -1,33 +1,43 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.moveZeroes = exports.replace = exports.isValid = exports.displayDirectory = exports.addCity = exports.testFunction = void 0;
+exports.moveZeroes = exports.replace = exports.isValid = exports.searchCity = exports.displayDirectory = exports.addCity = exports.testFunction = void 0;
 const testFunction = () => {
     console.log("Hello Cold World");
 };
 exports.testFunction = testFunction;
-//NUMBER 1
 var cityDirectory = [];
-const addCity = (city) => {
-    cityDirectory.push(city);
-    (0, exports.displayDirectory)();
+const addCity = (city, country, population) => {
+    if (city != "" && country != "" && population != 0) {
+        var newCity = { city: city, country: country, population: population };
+        cityDirectory.push(newCity);
+        (0, exports.displayDirectory)(cityDirectory);
+    }
+    else {
+        console.log("null");
+    }
 };
 exports.addCity = addCity;
-const displayDirectory = () => {
+const displayDirectory = (listing) => {
     let list = document.getElementById('cityDirectory');
     if (list) {
         while (list.hasChildNodes() && list.firstChild) {
             list.removeChild(list.firstChild);
         }
     }
-    cityDirectory.forEach((item) => {
-        if (list) {
-            let li = document.createElement("li");
-            li.innerText = item;
-            list.appendChild(li);
-        }
+    listing.forEach((city) => {
+        let li = document.createElement("li");
+        li.innerText = city.city + ", " + city.country + ", " + city.population;
+        list === null || list === void 0 ? void 0 : list.appendChild(li);
     });
 };
 exports.displayDirectory = displayDirectory;
+const searchCity = (searchKey) => {
+    var searchCity = cityDirectory
+        .filter(c => (c.city.toLowerCase().indexOf(searchKey.toLowerCase()) >= 0
+        || c.country.toLowerCase().indexOf(searchKey.toLowerCase()) >= 0));
+    (0, exports.displayDirectory)(searchCity);
+};
+exports.searchCity = searchCity;
 //NUMBER 2
 var isbn = "";
 const isValid = (isbn) => {
@@ -60,7 +70,7 @@ exports.isValid = isValid;
 var str = "cat30";
 console.log(str);
 const replace = (str) => {
-    var newStr1 = str.replace(/[a-z]/gi, function (c) {
+    var newStr1 = str.replace(/[a-z]/gi, c => {
         switch (c) {
             case 'z': return 'a';
             case 'Z': return 'A';
@@ -82,7 +92,9 @@ const moveZeroes = (numList) => {
             numList.splice(numList.length - 1, 0, numList.splice(i, 1)[0]);
         }
     }
+    var numList2 = numList.filter(c => c !== 0).concat(numList.filter(d => d === 0));
     console.log(numList);
+    console.log(numList2);
 };
 exports.moveZeroes = moveZeroes;
 (0, exports.moveZeroes)(numList);

@@ -4,28 +4,46 @@ export const testFunction = () => {
 }
 
 //NUMBER 1
-var cityDirectory:string[] = [];
-
-export const addCity = (city:string) => {
-    cityDirectory.push(city);
-    displayDirectory();
+interface cityDetails {
+    city:string;
+    country:string;
+    population:number;
 }
 
-export const displayDirectory = () => {
+var cityDirectory:cityDetails[] = [];
+
+export const addCity = (city:string, country:string, population:number) => {
+    if(city!="" && country!="" && population!=0){
+        var newCity:cityDetails={city:city, country:country, population:population}
+        cityDirectory.push(newCity)
+        displayDirectory(cityDirectory);
+    } else{
+        console.log("null")
+    }
+}
+
+export const displayDirectory = (listing:cityDetails[]) => {
     let list = document.getElementById('cityDirectory');
     if(list) {
         while(list.hasChildNodes() && list.firstChild) {
             list.removeChild(list.firstChild)
         }
     }
-    cityDirectory.forEach((item) => {
-        if(list) {
-            let li = document.createElement("li");
-            li.innerText = item
-            list.appendChild(li)
-        }
+    listing.forEach((city) => {
+        let li = document.createElement("li");
+        li.innerText = city.city + ", " + city.country + ", " +city.population
+        list?.appendChild(li);
     })
 }
+
+export const searchCity = (searchKey:string) => {
+    var searchCity = cityDirectory
+        .filter(c => (c.city.toLowerCase().indexOf(searchKey.toLowerCase()) >= 0
+                || c.country.toLowerCase().indexOf(searchKey.toLowerCase()) >= 0));
+    displayDirectory(searchCity);
+}
+
+
 
 //NUMBER 2
 var isbn:string = "";
@@ -66,7 +84,7 @@ console.log(str)
 
 export const replace = (str:string) =>{
 
-    var newStr1 = str.replace(/[a-z]/gi, function(c) {
+    var newStr1 = str.replace(/[a-z]/gi, c => {
         switch (c) {
           case 'z': return 'a';
           case 'Z': return 'A';
@@ -75,6 +93,7 @@ export const replace = (str:string) =>{
     });
 
     var newStr2 = newStr1.split('').reduce((a, c) => a + (/[aeiou]/i.test(c) ? c.toUpperCase() : c.toLowerCase()), "");
+    
     console.log(newStr2)
  
 }
@@ -96,7 +115,10 @@ export const moveZeroes = (numList:(string|number|boolean)[])=>{
         }
                
     }
+    var numList2 = numList.filter(c => c!==0).concat(numList.filter(d => d===0));
+
     console.log(numList)
+    console.log(numList2)
 }
 moveZeroes(numList);
 
